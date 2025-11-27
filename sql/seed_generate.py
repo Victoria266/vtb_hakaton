@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Simple CSV generator for demo data
 import csv
 from datetime import datetime, timedelta
 import random

@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -e
+
 DB_NAME=testdb
+DB_USER=testuser
+DB_PASS=testpass
+PG_HOST=pg
+
+export PGPASSWORD=$DB_PASS
+
 CLIENTS=50
 TIME=60
 
-
-# Run pgbench with custom script (if available)
-pgbench -c $CLIENTS -T $TIME -f pgbench/oltp_script.lua -U testuser $DB_NAME
-
-
-# Alternatively run many short psql transactions
-# for i in $(seq 1 1000); do psql -d $DB_NAME -c "INSERT INTO demo.orders (customer_id, amount) VALUES (floor(random()*10000)+1, 10)" & done
+echo "Running OLTP load..."
+pgbench -h $PG_HOST -U $DB_USER -c $CLIENTS -T $TIME -f pgbench/oltp_script.lua $DB_NAME
