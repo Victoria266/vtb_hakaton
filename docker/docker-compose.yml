@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pg:
+    image: postgres:16
+    container_name: pg_hackathon
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  runner:
+    build: .
+    container_name: runner
+    depends_on:
+      - pg
+    volumes:
+      - .:/app
+      - ./metrics:/app/metrics
+    working_dir: /app
+
+volumes:
+  pg_data:
